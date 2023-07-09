@@ -1,0 +1,91 @@
+package myproject.basics;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Driver {
+    private String carModel;
+    private double rating;
+     double distanceFromCustomer;
+
+    public Driver(String carModel, double rating, double distanceFromCustomer) {
+        this.carModel = carModel;
+        this.rating = rating;
+        this.distanceFromCustomer = distanceFromCustomer;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public double getDistanceFromCustomer() {
+        return distanceFromCustomer;
+    }
+}
+class RideBookingSystem {
+    private List<Driver> drivers;
+
+    public RideBookingSystem(List<Driver> drivers) {
+        this.drivers = drivers;
+    }
+
+    public String bookRide(double distance, String requestedCarModel) {
+        List<Driver> eligibleDrivers = new ArrayList<>();
+
+        for (Driver driver : drivers) {
+            if (driver.getRating() >= 4 && driver.getCarModel().equalsIgnoreCase(requestedCarModel)) {
+                eligibleDrivers.add(driver);
+            }
+        }
+
+        if (eligibleDrivers.isEmpty()) {
+            return "No drivers available with the requested car model.";
+        }
+
+        Driver closestDriver = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (Driver driver : eligibleDrivers) {
+            if (driver.getDistanceFromCustomer() < minDistance) {
+                closestDriver = driver;
+                minDistance = driver.getDistanceFromCustomer();
+            }
+        }
+
+        if (closestDriver == null) {
+            return "No eligible drivers found.";
+        }
+
+        double totalCharge = distance * 8;
+        String driverName = "Driver " + closestDriver.getCarModel().charAt(0);
+
+        return driverName + " will get you to the destination.\nYour charge will be Rs " + totalCharge;
+    }
+}
+public class RIDE_RENTAL {
+    public static void main(String[] args) {
+        List<Driver> drivers = new ArrayList<>();
+        drivers.add(new Driver("Sedan", 4, 500));
+        drivers.add(new Driver("Hatchback", 4.3, 1000));
+        drivers.add(new Driver("5-Seater", 4.8, 200));
+        drivers.add(new Driver("Sedan", 4.1, 700));
+        drivers.add(new Driver("Hatchback", 4.7, 430));
+
+        RideBookingSystem bookingSystem = new RideBookingSystem(drivers);
+
+        // Sample Input 1
+        Scanner sc=new Scanner(System.in);
+        int a=sc.nextInt();
+        String s1 =sc.nextLine();
+        System.out.println(bookingSystem.bookRide(a,s1));
+
+      
+       
+    }
+}
+
+
